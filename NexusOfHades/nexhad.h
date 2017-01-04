@@ -26,8 +26,12 @@
 #define   FALSE   ( ! TRUE )
 #endif /* FALSE */
 
-/* Structures. */
+/* Enums. */
+typedef enum { SECTION_NONE, SECTION_OVERVIEW, SECTION_LAYOUT, SECTION_MOVEMENT } nhsection_t;
+//typedef enum { MENU_MAIN, GAME, EXIT } mainstate_t;
+typedef enum { CLASS_WAR, CLASS_KN, CLASS_CLR, CLASS_DK, CLASS_NEC, CLASS_MNK, CLASS_DRU } nhclass_t;
 
+/* Structures. */
 typedef struct {
     char      content;
 } nhtile_t;
@@ -39,9 +43,30 @@ typedef struct {
     nhtile_t *tiles;
 } nhmap_t;
 
-/* Enums. */
-typedef enum { SECTION_NONE, SECTION_OVERVIEW, SECTION_LAYOUT, SECTION_MOVEMENT } nhsection_t;
-//typedef enum { MENU_MAIN, GAME, EXIT } mainstate_t;
+typedef struct {
+    char       *name;
+    char       *description;
+} nhthing_t;
+
+typedef struct {
+    float       hp;
+    float       hp_regen;
+    float       ap;
+    float       ap_regen;
+    short       att_str;
+    short       att_con;
+    short       att_sta;
+    short       att_dex;
+    nhthing_t  *thing;
+} nhliving_t;
+
+typedef struct {
+    short       att_wis;
+    short       att_int;
+    short       att_cha;
+    nhclass_t   class;
+    nhliving_t *living;
+} nhsentient_t;
 
 /* Function prototypes. */
 int             display_map( const nhmap_t *, short, short, short, short );
