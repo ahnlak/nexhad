@@ -37,6 +37,7 @@ const nhmap_t *map_load( const char *p_filename ) {
     short       l_currline;
     nhsection_t l_section = SECTION_NONE;
     nhtile_t   *l_worktile;
+    nhloc_t     l_tileloc;
 
     /* Check that we can open the map, otherwise nothing else matters. */
     l_fptr = fopen( p_filename, "r" );
@@ -113,7 +114,9 @@ const nhmap_t *map_load( const char *p_filename ) {
                 /* Work through the line then, one tile at a time. */
                 for ( l_index = 0; l_index < l_buflen; l_index++ ) {
                     /* Fetch the tile. */
-                    l_worktile = map_get_tile( l_new_map, l_index, l_currline );
+                    l_tileloc.x = l_index;
+                    l_tileloc.y = l_currline;
+                    l_worktile = map_get_tile( l_new_map, &l_tileloc );
                     if ( l_worktile == NULL ) {
                         map_free( l_new_map );
                         return NULL;
@@ -166,25 +169,24 @@ void map_free( const nhmap_t *p_map ) {
 /***************************************************************************\
 | map_get_tile - Returns a pointer to the tile at a given location.         |
 +--------------------------------Parameters---------------------------------+
-| const nhmap * - pointer to the map to work with.                          |
-| short         - the x position of the tile to find.                       |
-| short         - the y position of the tile to find.                       |
+| const nhmap_t * - pointer to the map to work with.                        |
+| const nhloc_t * - the location of the tile to find.                       |
 +----------------------------------Returns----------------------------------+
 | nhtile_t * - pointer to the tile in question, or NULL on error.           |
 \***************************************************************************/
-nhtile_t *map_get_tile( const nhmap_t *p_map, short p_x, short p_y ) {
+nhtile_t *map_get_tile( const nhmap_t *p_map, const nhloc_t *p_location ) {
     /* Validate the map. */
-    if ( p_map == NULL ) {
+    if ( p_map == NULL || p_location == NULL ) {
         return NULL;
     }
 
     /* And validate the location on that map. */
-    if ( ( p_x >= p_map->width ) || ( p_y >= p_map->height ) ) {
+    if ( ( p_location->x >= p_map->width ) || ( p_location->y >= p_map->height ) ) {
         return NULL;
     }
 
     /* Fairly simple maths then! */
-    return &( p_map->tiles[p_x+(p_y*p_map->width)] );
+    return &( p_map->tiles[p_location->x+(p_location->y*p_map->width)] );
 }
 
 /* End of file map.c */

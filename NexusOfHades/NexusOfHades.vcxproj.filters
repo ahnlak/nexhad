@@ -24,6 +24,9 @@
     <ClCompile Include="display.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="type.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nexhad.h">

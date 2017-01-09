@@ -28,51 +28,72 @@
 
 /* Enums. */
 typedef enum { SECTION_NONE, SECTION_OVERVIEW, SECTION_LAYOUT, SECTION_MOVEMENT } nhsection_t;
-//typedef enum { MENU_MAIN, GAME, EXIT } mainstate_t;
+typedef enum { STATE_SPLASH, STATE_MENU, STATE_GAME, STATE_EXIT } nhstate_t;
 typedef enum { CLASS_WAR, CLASS_KN, CLASS_CLR, CLASS_DK, CLASS_NEC, CLASS_MNK, CLASS_DRU } nhclass_t;
 
 /* Structures. */
 typedef struct {
-    char      content;
-} nhtile_t;
+    short           x;
+    short           y;
+    short           width;
+    short           height;
+} nhloc_t;
 
 typedef struct {
-    short     width;
-    short     height;
-    char     *title;
-    nhtile_t *tiles;
-} nhmap_t;
+    char           *title;
+    char           *description;
+    char            symbol;
+} nhtype_t;
 
 typedef struct {
-    char       *name;
-    char       *description;
+    char           *name;
+    char           *description;
+    nhloc_t         location;
+    nhtype_t       *type;
 } nhthing_t;
 
 typedef struct {
-    float       hp;
-    float       hp_regen;
-    float       ap;
-    float       ap_regen;
-    short       att_str;
-    short       att_con;
-    short       att_sta;
-    short       att_dex;
-    nhthing_t  *thing;
+    short           hp;
+    short           hp_regen;
+    short           ap;
+    short           ap_regen;
+    short           move_speed;
+    short           haste;
+    short           att_str;
+    short           att_con;
+    short           att_sta;
+    short           att_dex;
+    nhthing_t      *thing;
 } nhliving_t;
 
 typedef struct {
-    short       att_wis;
-    short       att_int;
-    short       att_cha;
-    nhclass_t   class;
-    nhliving_t *living;
+    short           att_wis;
+    short           att_int;
+    short           att_cha;
+    nhclass_t       class;
+    nhliving_t     *living;
 } nhsentient_t;
 
+typedef struct {
+    char            content;
+} nhtile_t;
+
+typedef struct {
+    short           width;
+    short           height;
+    char           *title;
+    nhtile_t       *tiles;
+    nhthing_t      *items;
+    nhliving_t     *beasts;
+    nhsentient_t   *beings;
+} nhmap_t;
+
 /* Function prototypes. */
-int             display_map( const nhmap_t *, short, short, short, short );
+int             display_map( const nhmap_t *, const nhloc_t * );
 const nhmap_t  *map_load( const char * );
 void            map_free( const nhmap_t * );
-nhtile_t       *map_get_tile( const nhmap_t *, short, short );
+nhtile_t       *map_get_tile( const nhmap_t *, const nhloc_t * );
+int             type_load( const char * );
 
 #endif /* NEXHAD_H */
 

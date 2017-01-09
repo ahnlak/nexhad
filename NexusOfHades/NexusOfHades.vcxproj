@@ -148,6 +148,7 @@
     <ClCompile Include="display.c" />
     <ClCompile Include="map.c" />
     <ClCompile Include="nexhad.c" />
+    <ClCompile Include="type.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nexhad.h" />
