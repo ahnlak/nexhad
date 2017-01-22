@@ -30,6 +30,8 @@
 typedef enum { SECTION_NONE, SECTION_OVERVIEW, SECTION_LAYOUT, SECTION_MOVEMENT } nhsection_t;
 typedef enum { STATE_SPLASH, STATE_MENU, STATE_GAME, STATE_EXIT } nhstate_t;
 typedef enum { CLASS_WAR, CLASS_KN, CLASS_CLR, CLASS_DK, CLASS_NEC, CLASS_MNK, CLASS_DRU } nhclass_t;
+typedef enum { TYPE_THING, TYPE_LIVING, TYPE_SENTIENT } nhtype_t;
+typedef enum { DIST_FLAT, DIST_LOW, DIST_HIGH, DIST_BELL } nhdist_t;
 
 /* Structures. */
 typedef struct {
@@ -40,16 +42,37 @@ typedef struct {
 } nhloc_t;
 
 typedef struct {
+    short           minimum;
+    short           maximum;
+    nhdist_t        distribution;
+} nhrange_t;
+
+typedef struct {
+    int x; /* placeholder! */
+} nhsentienttype_t;
+
+typedef struct {
+    int x; /* placeholder! */
+    nhsentienttype_t *sentient;
+} nhlivingtype_t;
+
+typedef struct {
+    nhtype_t        type;
     char           *title;
     char           *description;
     char            symbol;
-} nhtype_t;
+    nhrange_t      *height;
+    nhrange_t      *width;
+    nhrange_t      *depth;
+    nhrange_t      *weight;
+    nhlivingtype_t *living;
+} nhthingtype_t;
 
 typedef struct {
     char           *name;
     char           *description;
     nhloc_t         location;
-    nhtype_t       *type;
+    nhthing_t      *basetype;
 } nhthing_t;
 
 typedef struct {
@@ -70,7 +93,7 @@ typedef struct {
     short           att_wis;
     short           att_int;
     short           att_cha;
-    nhclass_t       class;
+    nhclass_t       char_class;
     nhliving_t     *living;
 } nhsentient_t;
 
